@@ -5,14 +5,13 @@ import Layout from "../Layout/Layout";
 
 const Router = () => {
   return (
-    // Asegúrate de devolver el JSX con un return
     <BrowserRouter>
-      <Layout>
-        <Routes>
+      <Routes>
+        <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="/eventos" element={<Perfil />} />
-        </Routes>
-      </Layout>
+          <Route path="/perfil" element={<Perfil />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 };

@@ -43,3 +43,12 @@ export const registerUser = async (user) => {
         console.error("Register error", error);
     }
 };
+
+export const getUserById = async (id) => {
+    try {
+        const response = await i.get("/users/" + id);
+        return response.data;
+    } catch (error) {
+        console.error("Get user by id error", error);
+    }
+};

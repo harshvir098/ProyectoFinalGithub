@@ -1,0 +1,68 @@
+/* Perfil.css */
+.perfil-container {
+  max-width: 900px;
+  margin: 120px auto 40px;
+  /* Añadido más espacio por encima */
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaeaea;
+}
+
+.perfil-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 25px;
+  font-family: 'Arial', sans-serif;
+  font-weight: 600;
+}
+
+.perfil-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  /* Añadido más espacio entre los campos */
+}
+
+.perfil-input-group {
+  margin-bottom: 20px;
+  /* Más espacio entre los grupos de entradas */
+}
+
+.perfil-label {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.perfil-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.perfil-input:focus {
+  border-color: #4caf50;
+  outline: none;
+}
+
+.perfil-save-button {
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  color: #fff;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center;
+}
+
+.perfil-save-button:hover {
+  background-color: #45a049;
+} 

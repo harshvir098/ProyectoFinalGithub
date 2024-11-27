@@ -1,24 +1,31 @@
-import { useState } from "react";
+/* eslint-disable no-unused-vars */
+import { useState, useEffect } from "react";
+import { Outlet } from "react-router-dom"; // Importa Outlet para manejar rutas anidadas
 import "./Layout.css"; // Archivo CSS separado
-import { login } from "../services/api"; // Servicio para login
-import { registerUser } from "../services/api"; // Servicio para registro
+import { login } from "../services/api"; // Servicio de login
+import { registerUser } from "../services/api"; // Servicio de registro
+import perfil from "../assets/perfil.png";
 
-const Navbar = () => {
+const Layout = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [formType, setFormType] = useState(""); // Para saber si es Login o Register
-  const [userLogin, setUserLogin] = useState({ username: "", password: "" });
-  const [userRegister, setUserRegister] = useState({
-    username: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [errorMessage, setErrorMessage] = useState(""); // Para mostrar mensajes de error
+  const [userLogin, setUserLogin] = useState({}); // Datos del login
+  const [userRegister, setUserRegister] = useState({}); // Datos del registro
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para saber si el usuario está logueado
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // Leer el estado de autenticación desde localStorage cuando se monta el componente
+  useEffect(() => {
+    const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
+    if (storedIsLoggedIn === "true") {
+      setIsLoggedIn(true); // Si está en localStorage, el usuario está logueado
+    }
+  }, []);
 
   // Maneja la apertura del popup y determina si es Login o Register
   const handleButtonClick = (type) => {
     setFormType(type); // Establece el tipo de formulario (Login o Register)
     setShowPopup(true); // Muestra el popup
-    setErrorMessage(""); // Limpiar mensaje de error al abrir el formulario
   };
 
   // Maneja el cierre del popup
@@ -26,74 +33,74 @@ const Navbar = () => {
     setShowPopup(false);
   };
 
-  // Maneja el cambio de valores para Login
-  const handleLoginChange = (e) => {
-    setUserLogin({ ...userLogin, [e.target.name]: e.target.value });
-  };
-
-  // Maneja el cambio de valores para Register
-  const handleRegisterChange = (e) => {
-    setUserRegister({ ...userRegister, [e.target.name]: e.target.value });
-  };
-
-  // Maneja el envío del formulario de login
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    // Llamada a la función login, pasa los datos del usuario
+  // Función para manejar el login
+  const handleLogin = () => {
     login(userLogin)
       .then((response) => {
-        // Lógica de éxito
-        console.log("Login exitoso", response);
-        setShowPopup(false); // Cerrar el popup
+        localStorage.setItem("isLoggedIn", "true"); // Guardar en localStorage
+        setIsLoggedIn(true);
+        setShowPopup(false);
       })
       .catch((error) => {
-        setErrorMessage("Usuario o contraseña incorrectos");
-        console.error(error);
+        setErrorMessage("Usuario o contraseña incorrectos.");
       });
   };
 
-  // Maneja el envío del formulario de registro
-  const handleRegisterSubmit = (e) => {
-    e.preventDefault();
-
-    // Verifica si las contraseñas coinciden
+  // Función para manejar el registro
+  const handleRegister = () => {
     if (userRegister.password !== userRegister.confirmPassword) {
-      setErrorMessage("Las contraseñas no coinciden");
+      setErrorMessage("Las contraseñas no coinciden.");
       return;
     }
-
-    // Llamada a la función registerUser, pasa los datos del nuevo usuario
     registerUser(userRegister)
-      .then((response) => {
-        // Lógica de éxito
-        console.log("Registro exitoso", response);
-        setShowPopup(false); // Cerrar el popup
+      .then(() => {
+        setShowPopup(false);
       })
       .catch((error) => {
-        setErrorMessage("Error al registrar el usuario");
-        console.error(error);
+        setErrorMessage("Error al registrar el usuario.");
       });
+  };
+
+  // Función para manejar el logout
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn"); // Eliminar el estado de localStorage
+    setIsLoggedIn(false);
   };
 
   return (
-    <div className="navbar-container">
-      <div className="navbar">
-        <div className="brand">
-          <h1>Mi Aplicación</h1>
-        </div>
-        <div className="button-group">
-          <button
-            className="navbar-button"
-            onClick={() => handleButtonClick("login")}
-          >
-            Login
-          </button>
-          <button
-            className="navbar-button"
-            onClick={() => handleButtonClick("register")}
-          >
-            Register
-          </button>
+    <div className="layout-container">
+      <div className="navbar-container">
+        <div className="navbar">
+          <div className="brand">
+            <h1>Mi Aplicación</h1>
+          </div>
+          <div className="button-group">
+            {!isLoggedIn ? (
+              <>
+                <button
+                  className="navbar-button"
+                  onClick={() => handleButtonClick("login")}
+                >
+                  Login
+                </button>
+                <button
+                  className="navbar-button"
+                  onClick={() => handleButtonClick("register")}
+                >
+                  Register
+                </button>
+              </>
+            ) : (
+              <div className="profile">
+                <a href="/perfil">
+                  <img src={perfil} alt="Perfil" className="profile-image" />
+                </a>
+                <button className="navbar-button" onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -103,9 +110,14 @@ const Navbar = () => {
           <div className="popup">
             <h2>{formType === "login" ? "Login" : "Register"}</h2>
             <form
-              onSubmit={
-                formType === "login" ? handleLoginSubmit : handleRegisterSubmit
-              }
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (formType === "login") {
+                  handleLogin();
+                } else {
+                  handleRegister();
+                }
+              }}
             >
               <label>
                 Usuario:
@@ -113,16 +125,13 @@ const Navbar = () => {
                   type="text"
                   className="input-field"
                   placeholder="Ingresa tu usuario"
-                  name="username"
-                  value={
+                  onChange={(e) =>
                     formType === "login"
-                      ? userLogin.username
-                      : userRegister.username
-                  }
-                  onChange={
-                    formType === "login"
-                      ? handleLoginChange
-                      : handleRegisterChange
+                      ? setUserLogin({ ...userLogin, username: e.target.value })
+                      : setUserRegister({
+                          ...userRegister,
+                          username: e.target.value,
+                        })
                   }
                 />
               </label>
@@ -132,16 +141,13 @@ const Navbar = () => {
                   type="password"
                   className="input-field"
                   placeholder="Ingresa tu contraseña"
-                  name="password"
-                  value={
+                  onChange={(e) =>
                     formType === "login"
-                      ? userLogin.password
-                      : userRegister.password
-                  }
-                  onChange={
-                    formType === "login"
-                      ? handleLoginChange
-                      : handleRegisterChange
+                      ? setUserLogin({ ...userLogin, password: e.target.value })
+                      : setUserRegister({
+                          ...userRegister,
+                          password: e.target.value,
+                        })
                   }
                 />
               </label>
@@ -152,9 +158,12 @@ const Navbar = () => {
                     type="password"
                     className="input-field"
                     placeholder="Confirma tu contraseña"
-                    name="confirmPassword"
-                    value={userRegister.confirmPassword}
-                    onChange={handleRegisterChange}
+                    onChange={(e) =>
+                      setUserRegister({
+                        ...userRegister,
+                        confirmPassword: e.target.value,
+                      })
+                    }
                   />
                 </label>
               )}
@@ -175,8 +184,13 @@ const Navbar = () => {
           </div>
         </div>
       )}
+
+      {/* Aquí se renderizan las rutas anidadas */}
+      <div className="main-content">
+        <Outlet /> {/* El contenido de las rutas se mostrará aquí */}
+      </div>
     </div>
   );
 };
 
-export default Navbar;
+export default Layout;

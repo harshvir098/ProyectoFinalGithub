@@ -8,6 +8,7 @@ import perfil from "../assets/perfil.png";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../providers/UserProvider";
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png"; // Asegúrate de importar tu logo
 
 const Layout = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -98,22 +99,23 @@ const Layout = () => {
       {/* Navbar */}
       <nav className="navbar-container">
         <div className="navbar">
-          <div className="brand">
-            <Link to="/" className="brand">
-              <h1>Mi Aplicación</h1>
-            </Link>
+          <div className="navbar-left">
+            <a href="/">
+              <img src={logo} alt="Logo" className="logo" />
+            </a>
           </div>
-          <div className="button-group">
+          <div className="navbar-center"></div>
+          <div className="navbar-right">
             {!isLoggedIn ? (
               <>
                 <button
-                  className="navbar-button"
+                  className="navbar-button login"
                   onClick={() => handleButtonClick("login")}
                 >
                   Login
                 </button>
                 <button
-                  className="navbar-button"
+                  className="navbar-button register"
                   onClick={() => handleButtonClick("register")}
                 >
                   Register
@@ -124,7 +126,7 @@ const Layout = () => {
                 <a href="/perfil">
                   <img src={perfil} alt="Perfil" className="profile-image" />
                 </a>
-                <button className="navbar-button" onClick={handleLogout}>
+                <button className="navbar-button logout" onClick={handleLogout}>
                   Logout
                 </button>
               </div>

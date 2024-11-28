@@ -3,6 +3,7 @@ import Home from "../pages/Home";
 import Perfil from "../pages/Perfil";
 import Layout from "../Layout/Layout";
 import PrivateRoute from "../components/PrivateRoute";
+import ErrorPage from "../pages/ErrorPage";
 
 const Router = () => {
   return (
@@ -18,6 +19,7 @@ const Router = () => {
               </PrivateRoute>
             }
           />
+          <Route path="/error" element={<ErrorPage />} /> {/* Ruta de error */}
         </Route>
       </Routes>
     </BrowserRouter>

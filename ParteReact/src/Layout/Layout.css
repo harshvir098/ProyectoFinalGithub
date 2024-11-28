@@ -1,83 +1,68 @@
-/* General reset */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
-  color: #333;
-}
-
-.layout-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-/* Navbar styles */
+/* General Navbar styles */
 .navbar-container {
-  background-color: #0044cc;
-  color: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #333;
+  /* Fondo oscuro para la barra de navegación */
+  padding: 10px 20px;
 }
 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
 }
 
-.brand h1 {
-  margin: 0;
-  font-size: 1.5rem;
+.navbar-left .logo {
+  width: 120px;
+  /* Ajusta el tamaño de tu logo */
 }
 
-.button-group {
+.navbar-right {
   display: flex;
-  align-items: center;
+  gap: 20px;
+  /* Espacio entre los botones */
 }
 
 .navbar-button {
-  background-color: white;
-  color: #0044cc;
-  border: none;
-  padding: 8px 12px;
-  margin-left: 10px;
+  padding: 10px 20px;
   border-radius: 4px;
+  border: none;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 14px;
+  color: #ffffff;
+  transition: background-color 0.3s;
 }
 
-.navbar-button:hover {
-  background-color: #003399;
-  color: white;
+/* Botón de Login */
+.navbar-button.login {
+  background-color: #007bff;
+  /* Azul */
 }
 
-.profile {
-  display: flex;
-  align-items: center;
+.navbar-button.login:hover {
+  background-color: #0056b3;
+  /* Azul más oscuro */
 }
 
-.profile-image {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-  border: 2px solid white;
-  cursor: pointer;
-  transition: transform 0.3s ease;
+/* Botón de Register */
+.navbar-button.register {
+  background-color: #28a745;
+  /* Verde */
 }
 
-.profile-image:hover {
-  transform: scale(1.1);
+.navbar-button.register:hover {
+  background-color: #218838;
+  /* Verde más oscuro */
 }
 
-/* Main content styles */
-main.main-content {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
-  background-color: #f4f6f8;
+/* Botón de Logout */
+.navbar-button.logout {
+  background-color: #dc3545;
+  /* Rojo */
+}
+
+.navbar-button.logout:hover {
+  background-color: #c82333;
+  /* Rojo más oscuro */
 }
 
 /* Popup styles */
@@ -91,97 +76,70 @@ main.main-content {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
 }
 
 .popup {
-  background-color: white;
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
   max-width: 400px;
 }
 
-.popup h2 {
-  margin: 0 0 20px;
-  font-size: 1.5rem;
-  text-align: center;
+h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
 }
 
 .input-field {
-  width: calc(100% - 20px);
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ced4da;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 14px;
 }
 
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
+.input-field:focus {
+  border-color: #343a40;
+  outline: none;
+}
+
+.error-message {
+  color: #dc3545;
+  /* Rojo para errores */
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.close-button,
+.submit-button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
 }
 
 .close-button {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
+  background-color: #6c757d;
+  /* Gris */
+  color: #ffffff;
 }
 
 .close-button:hover {
-  background-color: #d32f2f;
+  background-color: #5a6268;
 }
 
 .submit-button {
-  background-color: #0044cc;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
+  background-color: #007bff;
+  /* Azul */
+  color: #ffffff;
 }
 
 .submit-button:hover {
-  background-color: #003399;
-}
-
-/* Error message styles */
-.error-message {
-  color: #f44336;
-  font-size: 0.9rem;
-  margin-top: 10px;
-  text-align: center;
-}
-
-/* Estilos para el enlace de texto */
-.navbar .brand a {
-  text-decoration: none;
-  /* Eliminar el subrayado */
-  color: white;
-  /* Texto blanco */
-  font-family: 'Arial', sans-serif;
-  /* Fuente limpia y moderna */
-  font-size: 1.8rem;
-  /* Tamaño de fuente mayor */
-  font-weight: 600;
-  /* Peso de la fuente */
-  transition: color 0.3s, transform 0.3s ease;
-  /* Transiciones suaves */
-}
-
-/* Efecto hover */
-.navbar .brand a:hover {
-  color: #007bff;
-  /* Cambia el color a azul al pasar el ratón */
-  transform: scale(1.05);
-  /* Aumentar ligeramente el tamaño al pasar el ratón */
+  background-color: #0056b3;
 }

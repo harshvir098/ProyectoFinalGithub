@@ -5,8 +5,7 @@ const PrivateRoute = ({ children }) => {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"; // Verifica si el usuario está logueado
 
   if (!isLoggedIn) {
-    alert("Por favor, inicie sesión para acceder a esta ruta.");
-    return <Navigate to="/" />;
+    return <Navigate to="/error" />; // Si no está logueado, redirige a la página de error
   }
 
   return children; // Si está logueado, renderiza la ruta protegida

@@ -1,80 +1,187 @@
-/* Contenedor de la Navbar */
+/* General reset */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Navbar styles */
 .navbar-container {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #ffffff;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  padding: 15px 0;
-  /* Espacio alrededor de la navbar */
-  border-bottom: 2px solid #eaeaea;
-  /* Línea sutil para separar la navbar */
+  background-color: #0044cc;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Cuerpo del Layout que contiene el contenido debajo de la Navbar */
-.main-content {
-  margin-top: 100px;
-  /* Deja más espacio debajo de la navbar */
-  padding: 40px 20px;
-  /* Espaciado más generoso */
-  background-color: #f4f4f4;
-  /* Color de fondo suave */
-  min-height: calc(100vh - 60px);
-  /* Asegura que el contenido llene toda la pantalla */
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Barra de navegación */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px;
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1001;
+  padding: 10px 20px;
 }
 
-/* Resto del estilo para botones y la estructura */
+.brand h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
 .button-group {
   display: flex;
-  gap: 20px;
-  justify-content: center;
+  align-items: center;
 }
 
-/* Estilo para el perfil */
+.navbar-button {
+  background-color: white;
+  color: #0044cc;
+  border: none;
+  padding: 8px 12px;
+  margin-left: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar-button:hover {
+  background-color: #003399;
+  color: white;
+}
+
 .profile {
   display: flex;
   align-items: center;
 }
 
 .profile-image {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  margin-right: 15px;
+  margin-right: 10px;
+  border: 2px solid white;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-.profile-link {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
-  margin-left: 15px;
-  font-size: 1.1rem;
+.profile-image:hover {
+  transform: scale(1.1);
 }
 
-.profile-link:hover {
-  text-decoration: underline;
+/* Main content styles */
+main.main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #f4f6f8;
 }
 
+/* Popup styles */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+}
+
+.popup h2 {
+  margin: 0 0 20px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.input-field {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.close-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.close-button:hover {
+  background-color: #d32f2f;
+}
+
+.submit-button {
+  background-color: #0044cc;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #003399;
+}
+
+/* Error message styles */
 .error-message {
-  color: red;
-  font-size: 14px;
+  color: #f44336;
+  font-size: 0.9rem;
   margin-top: 10px;
   text-align: center;
-  font-weight: bold;
+}
+
+/* Estilos para el enlace de texto */
+.navbar .brand a {
+  text-decoration: none;
+  /* Eliminar el subrayado */
+  color: white;
+  /* Texto blanco */
+  font-family: 'Arial', sans-serif;
+  /* Fuente limpia y moderna */
+  font-size: 1.8rem;
+  /* Tamaño de fuente mayor */
+  font-weight: 600;
+  /* Peso de la fuente */
+  transition: color 0.3s, transform 0.3s ease;
+  /* Transiciones suaves */
+}
+
+/* Efecto hover */
+.navbar .brand a:hover {
+  color: #007bff;
+  /* Cambia el color a azul al pasar el ratón */
+  transform: scale(1.05);
+  /* Aumentar ligeramente el tamaño al pasar el ratón */
 }

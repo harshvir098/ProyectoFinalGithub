@@ -1,64 +1,98 @@
 import { useEffect, useState } from "react";
 import { getUserById } from "../services/api";
-import { useUserContext } from "../providers/UserProvider";
+import "./Perfil.css";
+import { savePerfil } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 const Perfil = () => {
   const [userData, setUserData] = useState({});
-  const { user } = useUserContext(); // Asegúrate de que `user` se obtiene correctamente del contexto
+  const navigate = useNavigate();
+
+  // Cargar el token y userId desde localStorage
+  const token = localStorage.getItem("token"); // Suponiendo que guardaste el token aquí.
+  const userId = localStorage.getItem("userId"); // Suponiendo que guardaste el id del usuario aquí.
 
   useEffect(() => {
-    if (user?.id) {
-      // Verificar si la `id` de `user` existe
-      getUserById(user.id)
+    if (token && userId) {
+      // Pasar el token en la cabecera de la solicitud
+      getUserById(userId, token)
         .then((response) => {
-          setUserData(response.data);
-          console.log(response.data);
+          setUserData(response);
+          console.log(response);
         })
         .catch((error) => {
           console.error("Error fetching user data", error);
         });
+    } else {
+      console.log("No token or user id found");
     }
-  }, []); // Agregar `user` como dependencia para que se ejecute cuando cambie
+  }, [token, userId]); // Dependencias ahora son token y userId
+
+  const handleInputChange = (field, value) => {
+    setUserData({ ...userData, [field]: value });
+  };
 
   return (
-    <div>
-      <h3>Perfil</h3>
-      <label>Usuario</label>
-      <input
-        type="text"
-        placeholder="Usuario"
-        value={userData.username || ""}
-        onChange={(e) => setUserData({ ...userData, username: e.target.value })}
-      />
-      <label>Nombre</label>
-      <input
-        type="text"
-        placeholder="Nombre"
-        value={userData.name || ""}
-        onChange={(e) => setUserData({ ...userData, name: e.target.value })}
-      />
-      <label>Apellido</label>
-      <input
-        type="text"
-        placeholder="Apellido"
-        value={userData.lastName || ""}
-        onChange={(e) => setUserData({ ...userData, lastName: e.target.value })}
-      />
-      <label>Edad</label>
-      <input
-        type="text"
-        placeholder="Edad"
-        value={userData.age || ""}
-        onChange={(e) => setUserData({ ...userData, age: e.target.value })}
-      />
-      <label>Localidad</label>
-      <input
-        type="text"
-        placeholder="Localidad"
-        value={userData.location || ""}
-        onChange={(e) => setUserData({ ...userData, location: e.target.value })}
-      />
-      <button>Guardar</button>
+    <div className="perfil-container">
+      <h3 className="perfil-title">Perfil</h3>
+      <form className="perfil-form">
+        <div className="perfil-input-group">
+          <label className="perfil-label">Usuario</label>
+          <label className="perfil-input">{userData.username}</label>
+        </div>
+
+        <div className="perfil-input-group">
+          <label className="perfil-label">Nombre</label>
+          <input
+            type="text"
+            className="perfil-input"
+            placeholder="Nombre"
+            value={userData.firstName || ""}
+            onChange={(e) => handleInputChange("firstName", e.target.value)}
+          />
+        </div>
+
+        <div className="perfil-input-group">
+          <label className="perfil-label">Apellido</label>
+          <input
+            type="text"
+            className="perfil-input"
+            placeholder="Apellido"
+            value={userData.lastName || ""}
+            onChange={(e) => handleInputChange("lastName", e.target.value)}
+          />
+        </div>
+
+        <div className="perfil-input-group">
+          <label className="perfil-label">Edad</label>
+          <input
+            type="number"
+            className="perfil-input"
+            placeholder="Edad"
+            value={userData.age || ""}
+            onChange={(e) => handleInputChange("age", e.target.value)}
+          />
+        </div>
+
+        <div className="perfil-input-group">
+          <label className="perfil-label">Localidad</label>
+          <input
+            type="text"
+            className="perfil-input"
+            placeholder="Localidad"
+            value={userData.location || ""}
+            onChange={(e) => handleInputChange("location", e.target.value)}
+          />
+        </div>
+
+        <button
+          type="button"
+          className="perfil-save-button"
+          onClick={() => savePerfil(userData).then(() => navigate("/"))}
+        >
+          Guardar
+        </button>
+      </form>
     </div>
   );
 };

@@ -46,9 +46,36 @@ export const registerUser = async (user) => {
 
 export const getUserById = async (id) => {
     try {
-        const response = await i.get("/users/" + id);
+        const token = localStorage.getItem("token");
+        if (token) {
+            setAuth(token);  // Configura el token en los encabezados de axios
+        }
+
+        const response = await i.get(`/users/${id}`);
+        
+        if (!response.data) {
+            throw new Error("No data returned from API");
+        }
+        
         return response.data;
     } catch (error) {
         console.error("Get user by id error", error);
     }
 };
+
+
+export const savePerfil = async (user) => {
+    try {
+        // Asegúrate de que el token esté configurado antes de hacer la solicitud
+        const token = localStorage.getItem("token");  // Obtener token del localStorage
+        if (token) {
+            setAuth(token);  // Configura el token en los encabezados de axios
+        }
+
+        // Realiza la solicitud PUT para guardar el perfil del usuario
+        await i.put(`/users/${user.id}`, user);
+    } catch (error) {
+        console.error("Save user error", error);
+    }
+};
+

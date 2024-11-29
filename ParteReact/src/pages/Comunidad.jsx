@@ -11,12 +11,29 @@ const Comunidad = () => {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    setComunidadData(getAutonomyByName(comunidad));
-    console.log(comunidadData);
+    // Traer datos de la autonomía
+    const fetchData = async () => {
+      const data = await getAutonomyByName(comunidad);
+      setComunidadData(data);
+
+      // Traer lugares según la categoría por defecto (Comida)
+      const placesData = await getPlacesByAutonomyAndCategory(
+        comunidad,
+        "Comida"
+      );
+      setPlaces(placesData);
+    };
+
+    fetchData();
   }, [comunidad]);
 
-  const handleButtonClick = (buttonName) => {
+  const handleButtonClick = async (buttonName) => {
     setSelectedButton(buttonName); // Actualiza el botón seleccionado
+    const placesData = await getPlacesByAutonomyAndCategory(
+      comunidad,
+      buttonName
+    );
+    setPlaces(placesData); // Actualiza los lugares según la categoría seleccionada
   };
 
   return (
@@ -36,17 +53,25 @@ const Comunidad = () => {
             key={buttonName}
             className={`comunidad-btn ${
               selectedButton === buttonName ? "active" : ""
-            }`} // Agrega la clase 'active' al botón seleccionado
-            onClick={() =>
-              handleButtonClick(buttonName).then(() =>
-                setPlaces(getPlacesByAutonomyAndCategory(comunidad, buttonName))
-              )
-            } // Maneja el clic en el botón
+            }`}
+            onClick={() => handleButtonClick(buttonName)} // Maneja el clic en el botón
           >
             {buttonName}
           </button>
         ))}
       </nav>
+      <div className="places-list">
+        {places.length > 0 ? (
+          places.map((place, index) => (
+            <div key={index} className="place-item">
+              <h3>{place.name}</h3>
+              <p>{place.description}</p>
+            </div>
+          ))
+        ) : (
+          <p>No hay lugares disponibles para esta categoría.</p>
+        )}
+      </div>
     </div>
   );
 };

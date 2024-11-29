@@ -79,3 +79,20 @@ export const savePerfil = async (user) => {
     }
 };
 
+export const getAutonomyByName = async (name) => {
+    try {
+        const response = await i.get(`/api/autonomies/${name}`);
+        return response.data;
+    } catch (error) {
+        console.error("Get autonomy by name error", error);
+    }
+};
+
+export const getPlacesByAutonomyAndCategory = async (autonomy, category) => {
+    try {
+        const response = await i.get(`/api/autonomy/${autonomy.id}/category/${category}`);
+        return response.data;
+    } catch (error) {
+        console.error("Get places by autonomy and category error", error);
+    }
+};

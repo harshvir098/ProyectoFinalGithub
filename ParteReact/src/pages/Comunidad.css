@@ -1,0 +1,70 @@
+/* Comunidad.css */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background-color: #f4f4f9;
+}
+
+.comunidad-container {
+  padding: 20px;
+  background-color: #f4f4f9;
+  border-radius: 8px;
+  max-width: 1200px;
+  margin: 40px auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.comunidad-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.comunidad-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.comunidad-btn {
+  background-color: #f4f4f9;
+  /* Fondo de los botones */
+  color: #2c3e50;
+  /* Color del texto */
+  border: 2px solid #3498db;
+  /* Borde azul */
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-grow: 1;
+  min-width: 150px;
+  max-width: 180px;
+  height: 50px;
+}
+
+.comunidad-btn:hover {
+  background-color: #e0e0e0;
+  /* Ligera tonalidad más clara al pasar el cursor */
+}
+
+.comunidad-btn:focus {
+  outline: none;
+  background-color: #d0d0d0;
+  /* Cambio cuando el botón está enfocado */
+}
+
+.comunidad-btn.active {
+  background-color: #b0b0b0;
+  /* Fondo más oscuro cuando el botón está "clicado" */
+}

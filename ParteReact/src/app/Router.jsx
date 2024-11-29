@@ -4,6 +4,7 @@ import Perfil from "../pages/Perfil";
 import Layout from "../Layout/Layout";
 import PrivateRoute from "../components/PrivateRoute";
 import ErrorPage from "../pages/ErrorPage";
+import Comunidad from "../pages/Comunidad";
 
 const Router = () => {
   return (
@@ -19,6 +20,7 @@ const Router = () => {
               </PrivateRoute>
             }
           />
+          <Route path="/:comunidad" element={<Comunidad />} />
           <Route path="/error" element={<ErrorPage />} /> {/* Ruta de error */}
         </Route>
       </Routes>

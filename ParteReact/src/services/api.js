@@ -81,7 +81,16 @@ export const savePerfil = async (user) => {
 
 export const getAutonomyByName = async (name) => {
     try {
+        const token = localStorage.getItem("token");  // Obtener token del localStorage
+        if (token) {
+            setAuth(token); 
+        }
         const response = await i.get(`/api/autonomies/${name}`);
+
+        if (!response.data) {
+            throw new Error("No data returned from API");
+        }
+        
         return response.data;
     } catch (error) {
         console.error("Get autonomy by name error", error);
@@ -90,7 +99,17 @@ export const getAutonomyByName = async (name) => {
 
 export const getPlacesByAutonomyAndCategory = async (autonomy, category) => {
     try {
-        const response = await i.get(`/api/autonomy/${autonomy.id}/category/${category}`);
+        const token = localStorage.getItem("token");  // Obtener token del localStorage
+        if (token) {
+            setAuth(token); 
+        }
+
+        const response = await i.get(`/api/autonomy/${autonomy}/category/${category}`);
+
+        if (!response.data) {
+            throw new Error("No data returned from API");
+        }
+        
         return response.data;
     } catch (error) {
         console.error("Get places by autonomy and category error", error);

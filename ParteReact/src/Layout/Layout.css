@@ -76,6 +76,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
+  /* Asegura que el overlay esté por encima de otros elementos */
 }
 
 .popup {
@@ -85,6 +87,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
+  z-index: 1001;
+  /* Asegura que el popup esté por encima del overlay */
 }
 
 h2 {
@@ -142,4 +146,26 @@ h2 {
 
 .submit-button:hover {
   background-color: #0056b3;
-} 
+}
+
+/* Contenedor de la parte del perfil y el botón Logout */
+.profile {
+  display: flex;
+  /* Usamos flexbox para alinear los elementos horizontalmente */
+  align-items: center;
+  /* Alineamos verticalmente los elementos al centro */
+  gap: 10px;
+  /* Espacio entre la imagen y el botón */
+}
+
+/* Estilo para la imagen de perfil */
+.profile-image {
+  width: 40px;
+  /* Tamaño de la imagen */
+  height: 40px;
+  /* Mantiene la imagen cuadrada */
+  object-fit: cover;
+  /* Recorta la imagen si es necesario */
+  border-radius: 50%;
+  /* Bordes redondeados */
+}

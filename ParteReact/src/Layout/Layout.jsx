@@ -124,7 +124,11 @@ const Layout = () => {
             ) : (
               <div className="profile">
                 <a href="/perfil">
-                  <img src={perfil} alt="Perfil" className="profile-image" />
+                  <img
+                    src={perfil}
+                    alt="Perfil"
+                    className="profile-image" // Aplica la clase para la imagen
+                  />
                 </a>
                 <button className="navbar-button logout" onClick={handleLogout}>
                   Logout

@@ -98,3 +98,13 @@ export const getPlacesByAutonomyAndCategory = async (autonomy, category) => {
         console.error("Get places by autonomy and category error", error);
     }
 };
+
+export const getPlaceByName = async (name) => {
+    try {
+        const response = await i.get(`/api/places/${name}`);
+
+        return response.data;
+    } catch (error) {
+        console.error("Get place by name error", error);
+    }
+};

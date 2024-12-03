@@ -1,20 +1,17 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   getAutonomyByName,
   getPlacesByAutonomyAndCategory,
 } from "../services/api";
 import "./Comunidad.css";
-import { useNavigate } from "react-router-dom";
 
 const Comunidad = () => {
   const { comunidad } = useParams();
   const [comunidadData, setComunidadData] = useState({});
-  const [selectedButton, setSelectedButton] = useState("Comida"); // Cambiado para seleccionar "Comida" por defecto
+  const [selectedButton, setSelectedButton] = useState("Comida");
   const [places, setPlaces] = useState([]);
   const navigate = useNavigate();
-
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   useEffect(() => {
     if (!comunidad) {
@@ -25,7 +22,6 @@ const Comunidad = () => {
       const data = await getAutonomyByName(comunidad);
       setComunidadData(data);
     };
-
     fetchData();
   }, [comunidad]);
 
@@ -38,21 +34,12 @@ const Comunidad = () => {
         );
         setPlaces(placesData || []);
       };
-
       fetchPlaces();
     }
-  }, [comunidadData, selectedButton]); // Ahora también se activa cuando selectedButton cambia
+  }, [comunidadData, selectedButton]);
 
-  const handleButtonClick = async (buttonName) => {
-    setSelectedButton(buttonName);
-  };
-
-  const handleButtonClickPlaces = async (place) => {
-    if (isLoggedIn) {
-      navigate(`/${place.placeName}`);
-    } else {
-      navigate("/login");
-    }
+  const handlePlaceClick = (place) => {
+    navigate(`/${comunidadData.name}/${place.placeName}`);
   };
 
   const categories = [
@@ -75,7 +62,7 @@ const Comunidad = () => {
             className={`comunidad-btn ${
               selectedButton === buttonName ? "active" : ""
             }`}
-            onClick={() => handleButtonClick(buttonName)}
+            onClick={() => setSelectedButton(buttonName)}
           >
             {buttonName}
           </button>
@@ -87,7 +74,7 @@ const Comunidad = () => {
             <div
               key={index}
               className="place-card"
-              onClick={handleButtonClickPlaces.bind(null, place)}
+              onClick={() => handlePlaceClick(place)}
             >
               <img
                 src={`http://localhost:8080/images/${place.imagePath}`}

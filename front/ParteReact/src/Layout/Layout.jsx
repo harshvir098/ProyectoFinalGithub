@@ -1,25 +1,22 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
-import "./Layout.css";
-import { login } from "../services/api";
-import { registerUser } from "../services/api";
+import { Outlet, useNavigate } from "react-router-dom";
+import { login, registerUser } from "../services/api";
 import perfil from "../assets/perfil.png";
-import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
+import { usePopupContext } from "../providers/PopUpProvider";
 import { useUserContext } from "../providers/UserProvider";
-import { Link } from "react-router-dom";
-import logo from "../assets/logo.png"; // Asegúrate de importar tu logo
+import "./Layout.css";
 
 const Layout = () => {
-  const [showPopup, setShowPopup] = useState(false);
-  const [formType, setFormType] = useState(""); // Login o Register
-  const [userLogin, setUserLogin] = useState({}); // Datos del login
-  const [userRegister, setUserRegister] = useState({}); // Datos del registro
+  const [userLogin, setUserLogin] = useState({});
+  const [userRegister, setUserRegister] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const { setUser } = useUserContext();
+  const { showPopup, formType, triggerPopup, closePopup } = usePopupContext(); // Aquí usamos el PopupContext
 
   useEffect(() => {
     const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
@@ -28,35 +25,20 @@ const Layout = () => {
     }
   }, []);
 
-  const handleButtonClick = (type) => {
-    setFormType(type);
-    setShowPopup(true);
-  };
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
-    setErrorMessage("");
-  };
-
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
-      // Llamamos a la función login y esperamos la respuesta
       const user = await login({
         username: userLogin.username,
         password: userLogin.password,
       });
-
       if (user && user.id && user.token) {
-        // Guardamos el usuario, token e id en localStorage
-        setUser(user); // Establece el usuario completo
+        setUser(user);
         localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("userId", user.id); // Guardar ID en localStorage
-        localStorage.setItem("token", user.token); // Guardar token en localStorage
-
+        localStorage.setItem("userId", user.id);
+        localStorage.setItem("token", user.token);
         setIsLoggedIn(true);
-        setShowPopup(false);
+        closePopup();
       } else {
         setErrorMessage("Usuario o contraseña incorrectos.");
       }
@@ -65,38 +47,31 @@ const Layout = () => {
     }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     if (userRegister.password !== userRegister.confirmPassword) {
       setErrorMessage("Las contraseñas no coinciden.");
       return;
     }
-    registerUser(userRegister)
-      .then(() => {
-        setShowPopup(false);
-      })
-      .catch(() => {
-        setErrorMessage("Error al registrar el usuario.");
-      });
+    try {
+      await registerUser(userRegister);
+      closePopup();
+    } catch {
+      setErrorMessage("Error al registrar el usuario.");
+    }
   };
 
   const handleLogout = () => {
-    // Eliminar los elementos relacionados con el login del localStorage
     localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("userId"); // Eliminar ID del usuario
-    localStorage.removeItem("token"); // Eliminar el token de autenticación
-
-    // Actualizar el estado de login
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
     setIsLoggedIn(false);
-    setUser(null); // Si estás usando el contexto para el usuario, reiniciar el estado
-
-    // Redirigir al usuario a la página de inicio
+    setUser(null);
     navigate("/");
   };
 
   return (
     <>
-      {/* Navbar */}
       <nav className="navbar-container">
         <div className="navbar">
           <div className="navbar-left">
@@ -104,19 +79,18 @@ const Layout = () => {
               <img src={logo} alt="Logo" className="logo" />
             </a>
           </div>
-          <div className="navbar-center"></div>
           <div className="navbar-right">
             {!isLoggedIn ? (
               <>
                 <button
                   className="navbar-button login"
-                  onClick={() => handleButtonClick("login")}
+                  onClick={() => triggerPopup("login")}
                 >
                   Login
                 </button>
                 <button
                   className="navbar-button register"
-                  onClick={() => handleButtonClick("register")}
+                  onClick={() => triggerPopup("register")}
                 >
                   Register
                 </button>
@@ -124,11 +98,7 @@ const Layout = () => {
             ) : (
               <div className="profile">
                 <a href="/perfil">
-                  <img
-                    src={perfil}
-                    alt="Perfil"
-                    className="profile-image" // Aplica la clase para la imagen
-                  />
+                  <img src={perfil} alt="Perfil" className="profile-image" />
                 </a>
                 <button className="navbar-button logout" onClick={handleLogout}>
                   Logout
@@ -139,7 +109,6 @@ const Layout = () => {
         </div>
       </nav>
 
-      {/* Popup para Login o Register */}
       {showPopup && (
         <div className="overlay">
           <div className="popup">
@@ -200,7 +169,7 @@ const Layout = () => {
                 <button
                   type="button"
                   className="close-button"
-                  onClick={handleClosePopup}
+                  onClick={closePopup}
                 >
                   Cerrar
                 </button>
@@ -213,7 +182,6 @@ const Layout = () => {
         </div>
       )}
 
-      {/* Main Content */}
       <main className="main-content">
         <Outlet />
       </main>

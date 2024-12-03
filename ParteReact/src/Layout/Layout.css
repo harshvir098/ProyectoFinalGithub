@@ -1,6 +1,6 @@
 /* General Navbar styles */
 .navbar-container {
-  background-color: #333;
+  background-color: #ffffff;
   /* Fondo oscuro para la barra de navegación */
   padding: 10px 20px;
 }
@@ -34,19 +34,19 @@
 
 /* Botón de Login */
 .navbar-button.login {
-  background-color: #007bff;
-  /* Azul */
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+
+.navbar-button.register {
+  background-color: #4a90e2;
+  color: #ffffff;
 }
 
 .navbar-button.login:hover {
   background-color: #0056b3;
   /* Azul más oscuro */
-}
-
-/* Botón de Register */
-.navbar-button.register {
-  background-color: #28a745;
-  /* Verde */
 }
 
 .navbar-button.register:hover {

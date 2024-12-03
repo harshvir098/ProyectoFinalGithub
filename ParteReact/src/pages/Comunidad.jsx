@@ -14,6 +14,8 @@ const Comunidad = () => {
   const [places, setPlaces] = useState([]);
   const navigate = useNavigate();
 
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+
   useEffect(() => {
     if (!comunidad) {
       console.error("El parámetro 'comunidad' no está presente en la URL.");
@@ -45,6 +47,14 @@ const Comunidad = () => {
     setSelectedButton(buttonName);
   };
 
+  const handleButtonClickPlaces = async (place) => {
+    if (isLoggedIn) {
+      navigate(`/${place.placeName}`);
+    } else {
+      navigate("/login");
+    }
+  };
+
   const categories = [
     "Comida",
     "Restaurantes",
@@ -57,7 +67,7 @@ const Comunidad = () => {
 
   return (
     <div className="comunidad-container">
-      <h1 className="comunidad-title">Comunidad: {comunidadData.name}</h1>
+      <h1 className="comunidad-title">{comunidadData.name}</h1>
       <nav className="comunidad-nav">
         {categories.map((buttonName) => (
           <button
@@ -77,7 +87,7 @@ const Comunidad = () => {
             <div
               key={index}
               className="place-card"
-              onClick={() => navigate(`/${place.placeName}`)}
+              onClick={handleButtonClickPlaces.bind(null, place)}
             >
               <img
                 src={`http://localhost:8080/images/${place.imagePath}`}

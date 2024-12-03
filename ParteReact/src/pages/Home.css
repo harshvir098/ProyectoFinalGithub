@@ -1,52 +1,66 @@
-/* Estilo para el contenedor del mapa */
-.map-container {
-  text-align: center;
-  position: relative;
-  display: inline-block;
-  width: 60%;
-  /* Ajusta el tamaño al 60% del contenedor */
-  max-width: 800px;
-  /* Establece un tamaño máximo */
+.home-container {
+  max-width: 1200px;
   margin: 0 auto;
-  /* Centra el mapa horizontalmente */
+  padding: 2rem;
+  font-family: 'Roboto', sans-serif;
 }
 
-/* Estilo para la imagen del mapa */
-img {
-  width: 100%;
-  /* El mapa ocupa todo el contenedor */
-  height: auto;
-  /* Mantiene la proporción de la imagen */
-  transition: all 0.3s ease;
-  /* Transición suave */
+
+h1 {
+  font-size: 2.5rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
-/* Estilo para las áreas interactivas */
-area {
-  cursor: pointer;
+
+.map-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilo cuando el mouse pasa por encima de las regiones */
-.area-hover {
-  background-color: rgba(255, 99, 71, 0.5);
-  /* Cambia el color de fondo al hacer hover */
-  transform: scale(1.05);
-  /* Aumenta ligeramente el tamaño */
-  transition: transform 0.3s ease, background-color 0.3s ease;
-  /* Transición suave */
-}
 
-/* Estilo para la información de la comunidad autónoma */
 .region-info {
-  margin-top: 20px;
+  margin-top: 1rem;
   font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+
+.region-tooltip {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  padding: 5px 10px;
+  font-size: 14px;
   font-weight: bold;
 }
 
-/* Estilo del título */
-h1 {
-  margin-bottom: 20px;
-  font-size: 2rem;
-  text-align: center;
-  color: #333;
+
+@media (max-width: 768px) {
+  .home-container {
+    padding: 1rem;
+  }
+
+
+  h1 {
+    font-size: 2rem;
+  }
+
+
+  .map-container {
+    height: 60vh !important;
+  }
 }

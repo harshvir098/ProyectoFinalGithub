@@ -1,24 +1,29 @@
 package com.proyectofinal.controllers;
 
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.proyectofinal.dto.PlaceWithRatingDTO;
 import com.proyectofinal.persistence.entities.Place;
 import com.proyectofinal.persistence.entities.PlaceRating;
-import com.proyectofinal.persistence.entities.User;
 import com.proyectofinal.persistence.repositories.PlaceRatingRepository;
 import com.proyectofinal.persistence.repositories.PlaceRepository;
 import com.proyectofinal.persistence.repositories.UserRepository;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -26,7 +31,7 @@ public class PlaceController {
 
     private final PlaceRepository placeRepository;
     private final PlaceRatingRepository placeRatingRepository;
-    private final UserRepository userRepository;
+    private final UserRepository userRepository; // Assuming there's a UserRepository to get user details
 
     @Autowired
     public PlaceController(PlaceRepository placeRepository, PlaceRatingRepository placeRatingRepository, UserRepository userRepository) {
@@ -52,11 +57,13 @@ public class PlaceController {
                         place.getCategory(),
                         calculateAverageRating(place),
                         place.getDescription(),  // Include description
-                        getRatingsWithUserDetails(place),
-                        place.getImagePath()
-                ))  // Include ratings with user names
+                        place.getLongitude(),
+                        place.getLatitude(),
+                        place.getImagePath(),
+                        getRatingsWithUserDetails(place)))  // Include ratings with user names
                 .collect(Collectors.toList());
     }
+
 
     // Helper method to calculate the average rating for a place
     private double calculateAverageRating(Place place) {
@@ -83,9 +90,13 @@ public class PlaceController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/places/{placeId}")
-    public Place getPlace(@PathVariable int placeId) {
-        return placeRepository.findById(placeId).orElseThrow(() -> new RuntimeException("Place not found"));
-    }
 
+    private static final String IMAGE_DIR = "src/main/resources/static/images/";
+
+
+
+    @GetMapping("/places/{placeName}")
+    public Place getPlace(@PathVariable String placeName) {
+        return placeRepository.findByName(placeName);
+    }
 }

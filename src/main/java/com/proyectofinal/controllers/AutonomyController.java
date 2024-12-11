@@ -1,15 +1,13 @@
 package com.proyectofinal.controllers;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.proyectofinal.persistence.entities.Autonomy;
 import com.proyectofinal.persistence.repositories.AutonomyRepository;
@@ -33,10 +31,11 @@ public class AutonomyController {
         // Fetching all autonomies from the repository
         return autonomyRepository.findAll();
     }
-    
+
     // Obtener una autonomía por nombre
     @GetMapping("/{name}")
     public ResponseEntity<Autonomy> getAutonomyByName(@PathVariable String name) {
+        // Buscar la autonomía decodificada
         Optional<Autonomy> autonomy = autonomyRepository.findByName(name);
 
         if (autonomy.isPresent()) {
@@ -44,6 +43,6 @@ public class AutonomyController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
 
-}
 }

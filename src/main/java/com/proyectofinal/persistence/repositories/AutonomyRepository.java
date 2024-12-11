@@ -2,14 +2,13 @@ package com.proyectofinal.persistence.repositories;
 
 import com.proyectofinal.persistence.entities.Autonomy;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AutonomyRepository extends JpaRepository<Autonomy, Integer> {
-    
-	boolean existsByName(String name);
+import java.util.Optional;
 
-	Optional<Autonomy> findByName(String name);
-	
-}
+public interface AutonomyRepository extends JpaRepository<Autonomy, Integer> {
+
+    boolean existsByName(String name);
+
+    // Metodo para encontrar una autonomía por nombre
+    Optional<Autonomy> findByName(String name);}

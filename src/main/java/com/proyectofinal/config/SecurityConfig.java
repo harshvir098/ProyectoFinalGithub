@@ -50,22 +50,21 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())  // Disable Cross-Site Request Forgery protection
-            .cors(withDefaults())  // Enable Cross-Origin Resource Sharing (CORS)
-            .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/api/autonomies","/api/autonomies/{name}","/api/places/{placeId}","/api/ratings/user/**").permitAll()  // Allow access to the autonomies endpoint without authentication
-                .requestMatchers("/auth/register").permitAll()
-                .requestMatchers("/api/ratings/**").authenticated()
-                .requestMatchers("/images/**").permitAll()
-                .requestMatchers("/api/autonomy/{autonomyId}/category/{category}").permitAll() // Allow access to the register endpoint without authentication
-                .anyRequest().authenticated()  // All other requests require authentication
-            )
-            .httpBasic(withDefaults())  // Enable HTTP Basic Authentication
-            .logout(logout -> logout
-                .logoutUrl("/auth/logout")  // URL to trigger logout
-                .logoutSuccessUrl("/auth/login")  // Redirect after logout
-                .invalidateHttpSession(true)  // Invalidate the session
-                .deleteCookies("JSESSIONID")  // Delete session cookie
-            );
+                .cors(withDefaults())  // Enable Cross-Origin Resource Sharing (CORS)
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/api/autonomies", "/api/autonomies/{name}", "api/places/{placeName}").permitAll()  // Allow access to the autonomies endpoint without authentication
+                        .requestMatchers("/auth/register").permitAll()
+                        .requestMatchers("/api/ratings/**").authenticated()
+                        .requestMatchers("/api/autonomy/{autonomyId}/category/{category}","/images/**", "/api/comments/place/{placeId}").permitAll() // Allow access to the register endpoint without authentication
+                        .anyRequest().authenticated()  // All other requests require authentication
+                )
+                .httpBasic(withDefaults())  // Enable HTTP Basic Authentication
+                .logout(logout -> logout
+                        .logoutUrl("/auth/logout")  // URL to trigger logout
+                        .logoutSuccessUrl("/auth/login")  // Redirect after logout
+                        .invalidateHttpSession(true)  // Invalidate the session
+                        .deleteCookies("JSESSIONID")  // Delete session cookie
+                );
         return http.build();
     }
 

@@ -11,10 +11,11 @@ public class PlaceWithRatingDTO {
     private Double latitude;
     private Double longitude;
     private String imagePath;
+    private Integer priceLevel;
     private List<RatingDetail> ratings;  // List of ratings with user details
 
     // Constructor
-    public PlaceWithRatingDTO(String placeName, String category, double averageRating, String description, Double longitude, Double latitude, String imagePath, List<RatingDetail> ratings) {
+    public PlaceWithRatingDTO(String placeName, String category, double averageRating, String description, Double longitude, Double latitude, String imagePath, Integer priceLevel, List<RatingDetail> ratings) {
         this.placeName = placeName;
         this.category = category;
         this.averageRating = averageRating;
@@ -23,6 +24,7 @@ public class PlaceWithRatingDTO {
         this.description = description;
         this.imagePath = imagePath;
         this.ratings = ratings;
+        this.priceLevel = priceLevel;
     }
 
     // Getters and Setters
@@ -90,6 +92,14 @@ public class PlaceWithRatingDTO {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public Integer getPriceLevel() {
+        return priceLevel;
+    }
+
+    public void setPriceLevel(Integer priceLevel) {
+        this.priceLevel = priceLevel;
     }
 
     // Inner class to hold rating details (user name and rating value)

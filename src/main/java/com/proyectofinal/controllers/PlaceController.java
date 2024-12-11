@@ -60,6 +60,7 @@ public class PlaceController {
                         place.getLongitude(),
                         place.getLatitude(),
                         place.getImagePath(),
+                        place.getPriceLevel(),
                         getRatingsWithUserDetails(place)))  // Include ratings with user names
                 .collect(Collectors.toList());
     }

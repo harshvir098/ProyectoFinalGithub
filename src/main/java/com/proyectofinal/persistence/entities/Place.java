@@ -1,13 +1,11 @@
 package com.proyectofinal.persistence.entities;
 
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 public class Place {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -17,25 +15,28 @@ public class Place {
     private Double latitude;
     private Double longitude;
     private String category;
-    private String imagePath; // New field
+    private String imagePath;
+    private Integer priceLevel;
 
     @ManyToOne
     @JoinColumn(name = "autonomy_id", nullable = false)
     private Autonomy autonomy;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true) // Relación uno a muchos, gestionada por `place` en `Comments`
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlaceRating> ratings;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true) // Relación uno a muchos, gestionada por `place` en `Comments`
-    private List<Comments> comments; // Aquí también usamos `mappedBy`
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comments> comments;
 
     // Default constructor
     public Place() {}
 
     // Parameterized constructor
-    public Place(String name, String description, Double latitude, Double longitude, String category, Autonomy autonomy, String imagePath, List<Comments> comments ) {
+    public Place(String name, String description, Double latitude, Double longitude,
+                 String category, Autonomy autonomy, String imagePath,
+                 List<Comments> comments, Integer priceLevel) {
         this.name = name;
         this.description = description;
         this.latitude = latitude;
@@ -44,6 +45,7 @@ public class Place {
         this.autonomy = autonomy;
         this.imagePath = imagePath;
         this.comments = comments;
+        this.priceLevel = priceLevel;
     }
 
     // Getters and Setters
@@ -117,6 +119,14 @@ public class Place {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public Integer getPriceLevel() {
+        return this.priceLevel;
+    }
+
+    public void setPriceLevel(Integer priceLevel) {
+        this.priceLevel = priceLevel;
     }
 
     public double getAverageRating() {
